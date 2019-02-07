@@ -10,6 +10,15 @@ class OwnersController < ApplicationController
         set :session_secret, "password_security"
     end
 
+    get "/owners" do
+      if session[:owner_id] !=nil
+        erb :"/owners/index"
+      else
+        flash[:message] = "It's not allowed for users who did not login, please login first"
+        redirect '/login'
+      end
+    end
+
     get "/owners/:id" do
 
       if session[:owner_id].to_s == params[:id]

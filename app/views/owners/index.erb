@@ -1,0 +1,4 @@
+<h2>Owner list</h2>
+<%Owner.all.each do |owner|%>
+<li><a href="/owners/<%=owner.id%>"><%=owner.name%></a></li>
+<%end%>
