@@ -1,0 +1,23 @@
+<form method="POST" action="/pets/<%=@pet.id%>">
+  <input id="hidden" type="hidden" name="_method" value="patch" />
+  <label for="con">Pet name</label>
+  <input type="text" id="con" name="pet_name" value="<%=@pet.name%>" placeholder="<%=@pet.name%>" />
+  <input type="submit" value="Edit Pet name" id='submit'/>
+</form>
+
+<form method="POST" action="/pets/<%=@pet.id%>/bye">
+  <input id="hidden" type="hidden" name="_method" value="patch" />
+  <%Owner.all.each do |owner|%>
+    <%if owner.o_type == "shelter" %>
+      <input type="radio" name="owner[name]" value= <%=owner.id%> id = "own"><label for="own"><%=owner.name%></label>
+    <%end%>
+  <%end%>
+  <input type="submit" value="Bye bye" id='submit'/>
+</form>
+
+<%if @pet.owner.o_type == "shelter"%>
+  <form method="POST" action="/pets/<%=@pet.id%>">
+  <input type="hidden" name="_method" value="DELETE" />
+  <input type="submit" value="Sadly bye!" />
+  </form>
+<%end%>

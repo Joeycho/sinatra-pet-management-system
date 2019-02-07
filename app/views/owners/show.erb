@@ -6,7 +6,7 @@
 <p>Your type: <%=@owner.o_type%></p>
 <h3>Your pet list</h3>
 <%@owner.pets.each do |pet|%>
-<li><%=pet.name%></li>
+<li><%=pet.name%>     <a href="/pets/<%=pet.id%>/edit">Edit pet's information</a></li>
 <%end%>
 <a href="/pets/new">Adopt pet</a><br>
 <a href="/owners">Owner list</a><br>
