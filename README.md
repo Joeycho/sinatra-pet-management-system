@@ -1,11 +1,11 @@
 # sinatra-pet-management-system
  
 
-##Description
+## Description
 
 There will be owners and pets in this system. Owners have two types, as normal owner or shelter owner. Only 'shelter' type of owner could delete each pet data from the database. All owners would have access to see owner's list and are able to adopt new dog, and existing dogs from shelters. They also can edit their dog's name. Normal owners only can leave their pets to shelters, and are not able to delete their pets.
 
-##Install instructions
+## Install instructions
 
 `bundle install`
 
@@ -20,7 +20,7 @@ When you type rake db:seed, it will add the 'heaven_shelter' for all pets, as th
 
 After setting up the database, use 'shotgun' to run the application on the server.
 
-##Contributors
+## Contributors
 
 From the former group pjoject, sinata-fwitter-group-project-v-000
 
