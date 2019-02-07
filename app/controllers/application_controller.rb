@@ -33,7 +33,6 @@ class ApplicationController < Sinatra::Base
               owner = Owner.create(:name => params[:ownername],:o_type => params[:o_type],:password => params[:password])
               owner.save
                 session[:owner_id] = owner.id
-                binding.pry
                 redirect "/owners/#{owner.id}"
             else
               flash[:message] = "You are already in our list, please try login with your password"
