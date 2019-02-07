@@ -3,8 +3,10 @@
 <% end %>
 
 <h2>Welcome! <%=@owner.name%></h2>
+<p>Your type: <%=@owner.o_type%></p>
 <h3>Your pet list</h3>
 <%@owner.pets.each do |pet|%>
 <li><%=pet.name%></li>
 <%end%>
+<a href="/owners">Owner list</a><br>
 <a href="/logout">Log Out</a>
