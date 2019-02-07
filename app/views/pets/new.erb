@@ -1,0 +1,9 @@
+<form action="/pets" method="POST">
+  <%Pet.all.each do |pet|%>
+    <%if pet.owner.o_type == "shelter" %>
+      <input type="checkbox" name="pets[][name]" value= <%=pet.name%>><%=pet.name%></input>
+    <%end%>
+  <%end%>
+    <input type="text" name="pet_name" placeholder="Pet name: ">
+    <input type="submit" value="Adopt pet" id="submit">
+</form>
