@@ -1,5 +1,5 @@
 # sinatra-pet-management-system
- a link to the license for your code
+ 
 
 ##Description
 
@@ -7,14 +7,14 @@ There will be owners and pets in this system. Owners have two types, as normal o
 
 ##Install instructions
 
-'bundle install'
+`bundle install`
 
 This command is for installing all the relevant gem with this application.
 
 Next, type this command on the terminal for setting up the database.
 
-'rake db:migrate'
-'rake db:seed'
+`rake db:migrate`
+`rake db:seed`
 
 When you type rake db:seed, it will add the 'heaven_shelter' for all pets, as the final destination.
 
@@ -24,14 +24,14 @@ After setting up the database, use 'shotgun' to run the application on the serve
 
 From the former group pjoject, sinata-fwitter-group-project-v-000
 
-'https://github.com/Joeycho/sinatra-fwitter-group-project-v-000/blob/wip/app/controllers/tweets_controller.rb'
+`https://github.com/Joeycho/sinatra-fwitter-group-project-v-000/blob/wip/app/controllers/tweets_controller.rb`
 
 Other sources are following,
 
 playlister-sinatra: flash gem for alerting error message interactively.
 
-'https://github.com/Joeycho/sinatra-fwitter-group-project-v-000/blob/wip/app/controllers/tweets_controller.rb'
+`https://github.com/Joeycho/sinatra-fwitter-group-project-v-000/blob/wip/app/controllers/tweets_controller.rb`
 
 nyc-sinatra: to fix file structures including sub-directory.
 
-'https://github.com/learn-co-curriculum/nyc-sinatra/tree/solution/app'
+`https://github.com/learn-co-curriculum/nyc-sinatra/tree/solution/app`
