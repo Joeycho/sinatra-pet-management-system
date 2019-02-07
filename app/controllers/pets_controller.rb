@@ -10,18 +10,19 @@ class PetsController < ApplicationController
 
   post '/pets' do
 
-          params[:pets].all.each do |pet|
+        if params[:pets] != nil
+          params[:pets].each do |pet|
             @pet = Pet.find_by(name: pet[:name])
             @pet.owner_id = session[:owner_id]
             @pet.save
           end
-
+        end
           if params[:pet_name]!=""
-            @pet = Pet.create(:name => params[:pet_name], :owner_id => session[:owner_id])
+            @pet = Pet.find_or_create_by(:name => params[:pet_name], :owner_id => session[:owner_id])
             @pet.save
           end
 
-          redirect "/owners/#{Owner.find(session[:owner_id])}"
+          redirect "/owners/#{session[:owner_id]}"
 
     end
 end

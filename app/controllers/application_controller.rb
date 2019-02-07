@@ -25,11 +25,19 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/signup' do
+
       if params[:ownername]!="" && params[:o_type]!="" && params[:password]!=""
-        owner = Owner.new(:name => params[:ownername],:o_type => params[:type], :password => params[:password])
-        owner.save
-        session[:owner_id] = owner.id
-        redirect "/owners/#{owner.id}"
+        owner = Owner.find_by(:name => params[:ownername],:o_type => params[:o_type])
+            binding.pry
+            if owner == nil
+              owner = Owner.create(:name => params[:ownername],:o_type => params[:o_type],:password => params[:password])
+              owner.save
+                session[:owner_id] = owner.id
+                redirect "/owners/#{owner.id}"
+            else
+              flash[:message] = "You are already in our list, please try login with your password"
+              redirect "/login"
+            end
       else
         flash[:message] = "Please fill in the input box with anything. Don't leave it as blank"
         redirect "/signup"
@@ -52,6 +60,7 @@ class ApplicationController < Sinatra::Base
       session[:owner_id] = owner.id
       redirect "/owners/#{session[:owner_id]}"
     else
+      flash[:message] = "Invalid login try, please try again with the valid one"
       redirect "/login"
     end
   end
