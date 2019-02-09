@@ -15,15 +15,12 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/signup' do
+
     if session[:owner_id]==nil
       erb :signup
-    elsif Owner.find(session[:owner_id]) != nil
-      flash[:message] = "You're already logged in. Please log out first to signup as new owner."
-      redirect :"/owners/#{session[:owner_id]}"
     else
-      flash[:message] = "Something wrong, you're automatically logged out"
-      session.clear
-      redirect "/"
+      flash[:message] = "You're already logged in. Please log out first to signup as new owner."
+      redirect :"/"
     end
   end
 
