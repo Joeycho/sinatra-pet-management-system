@@ -15,12 +15,15 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/signup' do
-
     if session[:owner_id]==nil
       erb :signup
-    else
+    elsif Owner.find(session[:owner_id]) != nil
       flash[:message] = "You're already logged in. Please log out first to signup as new owner."
       redirect :"/owners/#{session[:owner_id]}"
+    else
+      flash[:message] = "Something wrong, you're automatically logged out"
+      session.clear
+      redirect "/"
     end
   end
 
@@ -28,7 +31,6 @@ class ApplicationController < Sinatra::Base
 
       if params[:ownername]!="" && params[:o_type]!="" && params[:password]!=""
         owner = Owner.find_by(:name => params[:ownername],:o_type => params[:o_type])
-            binding.pry
             if owner == nil
               owner = Owner.create(:name => params[:ownername],:o_type => params[:o_type],:password => params[:password])
               owner.save
