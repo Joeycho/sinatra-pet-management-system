@@ -26,7 +26,9 @@ class PetsController < ApplicationController
     end
 
     get "/pets/:id/edit" do
-    if session[:owner_id]==nil && session[:owner_id] != Pet.find(params[:id]).owner.id
+    if session[:owner_id]==nil
+        redirect "/login"
+    elsif session[:owner_id] != Pet.find(params[:id]).owner.id
         redirect "/login"
     else
       @pet = Pet.find(params[:id])
