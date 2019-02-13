@@ -10,7 +10,7 @@ class OwnersController < ApplicationController
     end
 
     get "/owners" do
-      if session[:owner_id] !=nil
+      if logged_in?
         erb :"/owners/index"
       else
         flash[:message] = "It's not allowed for users who did not login, please login first"
@@ -19,10 +19,14 @@ class OwnersController < ApplicationController
     end
 
     get "/owners/:id" do
-
-      if session[:owner_id].to_s == params[:id]
-        @owner = Owner.find(session[:owner_id])
-        erb :"/owners/show"
+      if logged_in?
+           if current_owner.id == params[:id].to_i
+            @owner = Owner.find(current_owner.id)
+            erb :"/owners/show"
+          else
+            flash[:message] = "You are accessing other owner's page!!"
+            redirect "/owners/#{current_owner.id}"
+          end
       else
         redirect '/login'
       end

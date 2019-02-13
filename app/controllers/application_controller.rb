@@ -16,7 +16,7 @@ class ApplicationController < Sinatra::Base
 
   get '/signup' do
 
-    if session[:owner_id]==nil
+    if !logged_in?
       erb :signup
     else
       flash[:message] = "You're already logged in. Please log out first to signup as new owner."
@@ -25,48 +25,69 @@ class ApplicationController < Sinatra::Base
   end
 
   post '/signup' do
-
-      if params[:ownername]!="" && params[:o_type]!="" && params[:password]!=""
-        owner = Owner.find_by(:name => params[:ownername],:o_type => params[:o_type])
-            if owner == nil
-              owner = Owner.create(:name => params[:ownername],:o_type => params[:o_type],:password => params[:password])
-              owner.save
-                session[:owner_id] = owner.id
-                redirect "/owners/#{owner.id}"
-            else
-              flash[:message] = "You are already in our list, please try login with your password"
-              redirect "/login"
-            end
-      else
-        flash[:message] = "Please fill in the input box with anything. Don't leave it as blank"
-        redirect "/signup"
-      end
+    if !logged_in?
+        if params[:ownername]!="" && params[:o_type]!="" && params[:password]!=""
+          owner = Owner.find_by(:name => params[:ownername],:o_type => params[:o_type])
+              if owner == nil
+                owner = Owner.create(:name => params[:ownername],:o_type => params[:o_type],:password => params[:password])
+                owner.save
+                  current_owner.id = owner.id
+                  redirect "/owners/#{owner.id}"
+              else
+                flash[:message] = "You are already in our list, please try login with your password"
+                redirect "/login"
+              end
+        else
+          flash[:message] = "Please fill in the input box with anything. Don't leave it as blank"
+          redirect "/signup"
+        end
+    else
+      flash[:message] = "You're already logged in. Please log out first to signup as new owner."
+      redirect :"/"
+    end
   end
 
   get "/login" do
-    if session[:owner_id]==nil
+    if !logged_in?
       erb :login
     else
       flash[:message] = "You're already logged in. Please log out first to login as the other owner."
-      redirect :"/owners/#{session[:owner_id]}"
+      redirect :"/owners/#{current_owner.id}"
     end
   end
 
   post '/login' do
-    owner = Owner.find_by(:name => params[:ownername])
+    if !logged_in?
+        owner = Owner.find_by(:name => params[:ownername])
 
-    if owner && owner.authenticate(params[:password])
-      session[:owner_id] = owner.id
-      redirect "/owners/#{session[:owner_id]}"
-    else
-      flash[:message] = "Invalid login try, please try again with the valid one"
-      redirect "/login"
-    end
+        if owner && owner.authenticate(params[:password])
+          session[:owner_id] = owner.id
+          redirect "/owners/#{current_owner.id}"
+        else
+          flash[:message] = "Invalid login try, please try again with the valid one"
+          redirect "/login"
+        end
+  else
+    flash[:message] = "You're already logged in. Please log out first to login as the other owner."
+    redirect :"/owners/#{current_owner.id}"
+  end
+
   end
 
   get "/logout" do
    session.clear
    redirect "/"
   end
+
+  helpers do
+      def logged_in?
+        !!current_owner
+      end
+
+      def current_owner
+        @current_owner ||= Owner.find_by(id: session[:owner_id]) if session[:owner_id]
+      end
+  end
+
 
 end

@@ -1,3 +1,7 @@
+<% if flash.has?(:message) %>
+  <%= flash[:message] %>
+<% end %>
+
 <form action="/pets" method="POST">
   <%Pet.all.each do |pet|%>
     <%if pet.owner.o_type == "shelter" %>
