@@ -31,7 +31,7 @@ class ApplicationController < Sinatra::Base
               if owner == nil
                 owner = Owner.create(:name => params[:ownername],:o_type => params[:o_type],:password => params[:password])
                 owner.save
-                  current_owner.id = owner.id
+                  session[:owner_id] = owner.id
                   redirect "/owners/#{owner.id}"
               else
                 flash[:message] = "You are already in our list, please try login with your password"
@@ -86,6 +86,13 @@ class ApplicationController < Sinatra::Base
 
       def current_owner
         @current_owner ||= Owner.find_by(id: session[:owner_id]) if session[:owner_id]
+      end
+
+      def redirect_if_not_logged_in
+        if !logged_in?
+          flash[:message] = "Something is wrong, login again"
+          redirect "/login"
+        end
       end
   end
 

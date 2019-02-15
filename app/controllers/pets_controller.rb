@@ -1,16 +1,18 @@
 class PetsController < ApplicationController
 
+  get '/pets' do
+    redirect_if_not_logged_in
+    @pets = Pet.all
+    erb :"/pets/index"
+  end
+
   get '/pets/new' do
-    if logged_in?
+      redirect_if_not_logged_in
       erb :"/pets/new"
-    else
-      flash[:message] = "Something is wrong, login again"
-      redirect "/login"
-    end
   end
 
   post '/pets' do
-      if logged_in?
+      redirect_if_not_logged_in
           if params[:pets] != nil
             params[:pets].each do |pet|
               @pet = Pet.find_by(name: pet[:name])
@@ -23,14 +25,10 @@ class PetsController < ApplicationController
               @pet.save
             end
             redirect "/owners/#{session[:owner_id]}"
-      else
-        flash[:message] = "Something is wrong, login again"
-        redirect "/login"
-      end
   end
 
     get "/pets/:id/edit" do
-        if logged_in?
+        redirect_if_not_logged_in
               if Pet.find(params[:id]) == nil
                 flash[:message]="There is no information about this pet"
                 redirect "/owners/#{current_owner.id}"
@@ -41,14 +39,10 @@ class PetsController < ApplicationController
                 flash[:message]="You are not allowed to edit this pet's information"
                 redirect "/owners/#{current_owner.id}"
               end
-        else
-          flash[:message] = "Something is wrong, login again"
-          redirect "/login"
-        end
   end
 
     patch '/pets/:id' do
-      if logged_in?
+      redirect_if_not_logged_in
           @pet = Pet.find_by_id(params[:id])
           if current_owner.id != @pet.owner_id
               flash[:message] = "It is not your pet!!"
@@ -61,15 +55,11 @@ class PetsController < ApplicationController
             flash[:message] = "Your input is not valid"
             redirect to "/pets/#{@pet.id}/edit"
           end
-      else
-        flash[:message] = "Something is wrong, login again"
-        redirect "/login"
-      end
     end
 
     patch '/pets/:id/bye' do
 
-      if logged_in?
+      redirect_if_not_logged_in
           @pet = Pet.find(params[:id])
 
           if current_owner.id == @pet.owner_id
@@ -80,14 +70,10 @@ class PetsController < ApplicationController
             flash[:message] = "This pet is not your pet!!"
             redirect to "/pets/#{@pet.id}/edit"
           end
-      else
-        flash[:message] = "Something is wrong, login again"
-        redirect "/login"
-      end
     end
 
     delete '/pets/:id' do
-        if logged_in?
+      redirect_if_not_logged_in
           @pet = Pet.find_by_id(params[:id])
           if current_owner.id == @pet.owner_id
             @pet.delete
@@ -95,10 +81,6 @@ class PetsController < ApplicationController
             flash[:message]="You are not allowed to delete this pet"
           end
             redirect to "/owners/#{current_owner.id}"
-        else
-          flash[:message] = "Something is wrong, login again"
-          redirect "/login"
-        end
     end
 
 
